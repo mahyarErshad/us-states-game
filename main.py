@@ -6,10 +6,20 @@ screen.title("US States Game")
 image = "blank_states_img.gif"
 screen.addshape(image)
 turtle.shape(image)
-
-answer = screen.textinput(title="Guess The State", prompt="What is the next State?")
+guessed_states = []
 
 data = pandas.read_csv("50_states.csv")
-data
+all_states = data.state.to_list()
+
+while len(guessed_states) < 50:
+    answer = screen.textinput(title=f"{len(guessed_states)}/50 is guessed.", prompt="What is the next State?").title()
+    if answer in all_states and answer not in guessed_states:
+        guessed_states.append(answer)
+        t = turtle.Turtle()
+        t.penup()
+        t.hideturtle()
+        state = data[data.state == answer]
+        t.goto(int(state.x), int(state.y))
+        t.write(answer)
 
 screen.exitonclick()
